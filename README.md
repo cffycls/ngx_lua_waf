@@ -69,10 +69,10 @@ $cfg['blowfish_secret'] = 'abpqrstuvwxyzabcdefgh.phpmyadmin'; //随意的字符,
 /var/www/html/phpMyAdmin/libraries/classes/Session.php on line 58 --  
 刷新几次就好，但偶然仍会出现。为了防止session固定、XSS跨站脚本攻击， 不活跃后强制刷新时会主动刷新，只在 远程存储session时生成才会异常。
 ```markdown
-session_regenerate_id(true) //更换session_id
+session_regenerate_id(true) //58行： 更换session_id
 
+http://192.168.1.111:8084/s.php //单独测试见: ../html/s.php
 Redis not available while creating session_id ...
-http://192.168.1.111:8084/s.php //见: ../html/s.php
 一直刷新，可能会报不同的错误: 无、notice、Fatal error，是PHP的bug
 
 注释掉： /var/www/html/phpMyAdmin/libraries/classes/Session.php 的58行即可。
