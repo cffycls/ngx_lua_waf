@@ -2,6 +2,10 @@
 
 # 8084：http1.0/1.1；8085：https；9500：代理到本机备用
 docker stop n3 && rm -rf logs/*.log && docker rm n3
+echo > /home/wwwroot/cluster/ngx_lua_waf/logs/access.log
+echo > /home/wwwroot/cluster/ngx_lua_waf/logs/error.log
+echo > /home/wwwroot/cluster/ngx_lua_waf/logs/proxy_access.log
+
 docker run -itd --name n3 -p 8084:80 -p 8085:443 -p 9500:9500 --network=mybridge \
 	--privileged=true \
 	-v /etc/timezone:/etc/localtime \

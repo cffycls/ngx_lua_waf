@@ -45,7 +45,23 @@ vim conf/nginx.conf:
 burst=30
 rate=10r/s
 ```  
-刷新OK。 
+重启nginx刷新OK。 
+- https://192.168.1.111:8085/phpMyAdmin/lint.php ERROR：403[跳转单页可访问]  
+  
+查看拦截无log，检查post传参。  
+
+```markdown
+Form Data:
+    sql_query: SELECT * FROM `user` WHERE 1
+
+备份并修改： conf/waf/wafconf/post，去除sql相关拦截
+```  
+重启nginx刷新OK。 
+```markdown
+添加IP到白名单，并还原post：
+vim conf/waf/config.lua，ipWhitelist添加 192.168.1.100
+```  
+重启nginx刷新OK。 
 
 3、其它问题
 ----
@@ -63,6 +79,8 @@ vim ../html/phpMyAdmin/config.sample.inc.php:
 vim ../html/phpMyAdmin/libraries/config.default.php:
 
 $cfg['blowfish_secret'] = 'abpqrstuvwxyzabcdefgh.phpmyadmin'; //随意的字符,够32位即可
+vim ../html/phpMyAdmin/libraries/config.default.php 792: $cfg['LoginCookieValidity'] = 604800; //3600*24*7=604800
+php.ini: session.gc_maxlifetime = 604800
 ```
 - Fatal error: Uncaught Error: Failed to create(read) session ID: redis
 
